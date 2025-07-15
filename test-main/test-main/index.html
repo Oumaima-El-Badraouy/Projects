@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terra Exports</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-white">
+  <!-- Top Header Bar -->
+  <div class="bg-green-500 text-white py-2">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-end">
+        <span class="text-sm font-medium">SALES@TERRAEXPORTS.COM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" id="logo">
+        <div class="grid grid-cols-3 gap-1">
+          <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+          <div class="w-3 h-3 bg-lime-400 rounded-full"></div>
+          <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+          <div class="w-3 h-3 bg-lime-500 rounded-full"></div>
+          <div class="w-3 h-3 bg-green-600 rounded-full"></div>
+          <div class="w-3 h-3 bg-lime-600 rounded-full"></div>
+          <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+          <div class="w-3 h-3 bg-lime-400 rounded-full"></div>
+          <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+        </div>
+        <div class="text-green-600">
+          <span class="text-2xl font-bold">terra</span><br />
+          <span class="text-lg font-medium">exports</span>
+        </div>
+      </div>
+      <!-- Navigation -->
+      <nav class="hidden md:flex space-x-8" id="main-nav">
+        <button class="font-medium transition-colors text-green-600 font-bold" data-page="home">Home</button>
+        <button class="font-medium transition-colors text-gray-600 hover:text-green-600" data-page="products">Products</button>
+        <button class="font-medium transition-colors text-gray-600 hover:text-green-600" data-page="about">About Us</button>
+        <button class="font-medium transition-colors text-gray-600 hover:text-green-600" data-page="contact">Contact Us</button>
+      </nav>
+      <!-- Search Icon -->
+      <button class="p-2 hover:bg-gray-100 rounded-full transition-colors hidden md:block">
+        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn" class="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <div class="w-5 h-5 flex flex-col justify-center space-y-1">
+          <div class="w-full h-0.5 bg-blue-500"></div>
+          <div class="w-full h-0.5 bg-blue-500"></div>
+          <div class="w-full h-0.5 bg-blue-500"></div>
+        </div>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden mt-4 py-4 border-t border-gray-200 md:hidden">
+      <nav class="flex flex-col space-y-3">
+        <button class="text-left transition-colors text-green-600 font-medium" data-page="home">Home</button>
+        <button class="text-left transition-colors text-gray-700 hover:text-green-600" data-page="products">Products</button>
+        <button class="text-left transition-colors text-gray-700 hover:text-green-600" data-page="about">About Us</button>
+        <button class="text-left transition-colors text-gray-700 hover:text-green-600" data-page="contact">Contact Us</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content"></main>
+
+  <!-- Footer -->
+  <footer class="bg-green-500 text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <div class="flex items-center justify-center space-x-2 mb-4">
+        <div class="grid grid-cols-3 gap-1">
+          <div class="w-2 h-2 bg-white rounded-full"></div>
+          <div class="w-2 h-2 bg-green-200 rounded-full"></div>
+          <div class="w-2 h-2 bg-white rounded-full"></div>
+          <div class="w-2 h-2 bg-green-200 rounded-full"></div>
+          <div class="w-2 h-2 bg-white rounded-full"></div>
+          <div class="w-2 h-2 bg-green-200 rounded-full"></div>
+          <div class="w-2 h-2 bg-white rounded-full"></div>
+          <div class="w-2 h-2 bg-green-200 rounded-full"></div>
+          <div class="w-2 h-2 bg-white rounded-full"></div>
+        </div>
+        <div class="text-white">
+          <span class="text-lg font-bold">terra</span>
+          <span class="text-sm font-medium ml-1">exports</span>
+        </div>
+      </div>
+      <p class="text-sm text-green-100">Fresh produce delivered worldwide</p>
+      <p class="text-xs text-green-200 mt-2">Website Design and Developed by MDOT Agency | © 2020 Terra Exports</p>
+    </div>
+  </footer>
+
+  <script>
+    // State
+    let currentPage = 'home';
+    let isMenuOpen = false;
+    let isSubmitting = false;
+    let formData = { name: '', phone: '', email: '', message: '' };
+
+    // Navigation
+    function navigateTo(page) {
+      currentPage = page;
+      isMenuOpen = false;
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    // Menu toggle
+    document.getElementById('menu-btn').onclick = function() {
+      isMenuOpen = !isMenuOpen;
+      renderMenu();
+    };
+
+    // Logo click
+    document.getElementById('logo').onclick = function() {
+      navigateTo('home');
+    };
+
+    // Render menu
+    function renderMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden', !isMenuOpen);
+    }
+
+    // Navigation buttons
+    function setupNavButtons() {
+      document.querySelectorAll('[data-page]').forEach(btn => {
+        btn.onclick = function() {
+          navigateTo(this.getAttribute('data-page'));
+        };
+      });
+    }
+
+    // Render main content
+    function render() {
+      renderMenu();
+      // Update nav active state
+      document.querySelectorAll('#main-nav button').forEach(btn => {
+        btn.classList.remove('text-green-600', 'font-bold');
+        btn.classList.add('text-gray-600');
+        if (btn.getAttribute('data-page') === currentPage) {
+          btn.classList.add('text-green-600', 'font-bold');
+          btn.classList.remove('text-gray-600');
+        }
+      });
+      // Render page
+      document.getElementById('main-content').innerHTML = pages[currentPage]();
+      setupNavButtons();
+      if (currentPage === 'contact') setupContactForm();
+    }
+
+    // Home Page
+    const pages = {
+      home: function() {
+        return `
+        <!-- Product Icons Bar -->
+        <div class="bg-gray-50 border-b">
+          <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-center items-center space-x-8 overflow-x-auto">
+              ${[
+                { icon: "🥑", label: "Avocados" },
+                { icon: "🫐", label: "Berries" },
+                { icon: "🍒", label: "Cherries" },
+                { icon: "🍎", label: "Apples" },
+                { icon: "🍇", label: "Grapes" },
+                { icon: "🍊", label: "Citrus" },
+                { icon: "🥝", label: "Kiwi" },
+                { icon: "🍌", label: "Bananas" },
+                { icon: "🥭", label: "Mango" },
+                { icon: "🍑", label: "Stone Fruits" },
+                { icon: "🥥", label: "Coconut" },
+              ].map(item => `
+                <div class="flex flex-col items-center min-w-fit cursor-pointer hover:scale-110 transition-transform" onclick="navigateTo('products')">
+                  <div class="text-3xl mb-2">${item.icon}</div>
+                  <span class="text-xs text-gray-600 text-center">${item.label}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-lime-50 to-green-50 py-16">
+          <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="flex items-center space-x-1">
+                    <div class="w-3 h-3 bg-lime-400 rounded-full"></div>
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-lime-600 rounded-full"></div>
+                  </div>
+                  <span class="text-2xl font-bold text-green-700">terra exports</span>
+                </div>
+                <h1 class="text-5xl font-bold mb-6">
+                  <span class="text-green-600">GLOBALLY</span><br />
+                  <span class="text-green-600">SOURCED.</span><br />
+                  <span class="text-gray-800">LOCALLY</span><br />
+                  <span class="text-gray-800">DELIVERED.</span>
+                </h1>
+                <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                  We source fresh produce from every continent and ship it directly to your door with our global network of trusted suppliers.
+                </p>
+                <button onclick="navigateTo('about')" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full text-lg font-semibold transition-colors">FIND OUT MORE</button>
+              </div>
+              <div class="relative">
+                <div class="relative z-10">
+                  <img src="https://placehold.co/500x400?text=Fruit" alt="Fresh citrus fruits with green leaves" class="rounded-lg shadow-lg w-full h-auto" />
+                </div>
+                <div class="absolute -top-4 -right-4 w-full h-full bg-gradient-to-br from-lime-200 to-green-300 rounded-lg -z-10"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Shipping Section -->
+        <section class="py-16 bg-gradient-to-r from-blue-400 to-blue-600">
+          <div class="container mx-auto px-4">
+            <div class="text-center">
+              <img src="https://placehold.co/800x300?text=Shipping" alt="Cargo ship on ocean" class="w-full max-w-4xl mx-auto rounded-lg shadow-lg" />
+            </div>
+          </div>
+        </section>
+        <!-- Global Reach Section -->
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div class="relative">
+                <img src="https://placehold.co/500x400?text=World+Map" alt="World map showing global reach" class="w-full h-auto opacity-60" />
+              </div>
+              <div>
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                  <span class="text-2xl">🌍</span>
+                </div>
+                <h2 class="text-4xl font-bold text-green-600 mb-6">FASTEST<br />GROWING<br />FRUIT<br />EXPORTERS.</h2>
+                <p class="text-gray-600 text-lg mb-6">
+                  We have been around since 2010 and are the fastest growing fruit exporters worldwide. We are known for delivering high quality fruit and exceptional customer service.
+                </p>
+                <button onclick="navigateTo('about')" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold transition-colors">VIEW OUR STORY & MISSION</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Pomegranate Section -->
+        <section class="py-16 bg-gradient-to-br from-pink-400 to-red-500 text-white">
+          <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>
+                </div>
+                <h2 class="text-4xl font-bold mb-6">FROM SPOT DEALS<br />TO SEASONAL<br />PROGRAMS.</h2>
+                <p class="text-pink-100 text-lg mb-6">
+                  We're here for all your needs - from large seasonal programs to last minute spot deals and everything in between. Our team is ready to help you find the best quality produce at competitive prices.
+                </p>
+                <button onclick="navigateTo('products')" class="bg-white text-red-500 hover:bg-gray-100 px-8 py-3 rounded-full font-semibold transition-colors">VIEW PRODUCTS</button>
+              </div>
+              <div class="relative">
+                <div class="relative z-10">
+                  <img src="https://placehold.co/400x400?text=Pomegranate" alt="Fresh pomegranates" class="rounded-lg shadow-lg w-full h-auto" />
+                </div>
+                <div class="absolute -top-4 -right-4 w-full h-full bg-gradient-to-br from-red-300 to-pink-400 rounded-lg -z-10"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Grapes Section -->
+        <section class="py-16 bg-gradient-to-br from-purple-500 to-purple-700 text-white">
+          <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div class="relative order-2 lg:order-1">
+                <div class="relative z-10">
+                  <img src="https://placehold.co/400x400?text=Grapes" alt="Fresh grapes" class="rounded-lg shadow-lg w-full h-auto" />
+                </div>
+                <div class="absolute -top-4 -left-4 w-full h-full bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg -z-10"></div>
+              </div>
+              <div class="order-1 lg:order-2">
+                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>
+                </div>
+                <h2 class="text-4xl font-bold mb-6">GROWN.<br />SHIPPED.</h2>
+                <p class="text-purple-100 text-lg mb-6">
+                  Our fruits and vegetables are locally sourced around the world, maintaining the highest quality standards. We work directly with growers to ensure freshness from farm to your table.
+                </p>
+                <button onclick="navigateTo('contact')" class="bg-white text-purple-600 hover:bg-gray-100 px-8 py-3 rounded-full font-semibold transition-colors">CONTACT US</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Pineapple Section -->
+        <section class="py-16 bg-gradient-to-br from-yellow-400 to-orange-500 text-white">
+          <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>
+                </div>
+                <h2 class="text-4xl font-bold mb-6">FROM THE FARM<br />TO YOUR DOOR.</h2>
+                <p class="text-yellow-100 text-lg mb-6">
+                  We manage the entire supply chain from farm to your door. Our integrated approach ensures the highest quality and freshness while maintaining competitive pricing and reliable delivery schedules.
+                </p>
+                <button onclick="navigateTo('about')" class="bg-white text-orange-500 hover:bg-gray-100 px-8 py-3 rounded-full font-semibold transition-colors">LEARN MORE</button>
+              </div>
+              <div class="relative">
+                <div class="relative z-10">
+                  <img src="https://placehold.co/400x400?text=Pineapple" alt="Fresh pineapple" class="rounded-lg shadow-lg w-full h-auto" />
+                </div>
+                <div class="absolute -top-4 -right-4 w-full h-full bg-gradient-to-br from-orange-300 to-yellow-400 rounded-lg -z-10"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Popular Produce Section -->
+        <section class="py-16 bg-white">
+          <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+              <h2 class="text-4xl font-bold text-green-600 mb-4">POPULAR PRODUCE</h2>
+              <div class="w-full h-4 bg-gradient-to-r from-green-400 via-lime-400 to-green-500 rounded-full"></div>
+            </div>
+            <div class="grid md:grid-cols-5 gap-8 text-center">
+              ${[
+                { name: "AVOCADOS", icon: "🥑" },
+                { name: "BERRIES", icon: "🫐" },
+                { name: "CHERRIES", icon: "🍒" },
+                { name: "APPLES", icon: "🍎" },
+                { name: "GRAPES", icon: "🍇" },
+              ].map(product => `
+                <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('products')">
+                  <div class="text-6xl mb-4">${product.icon}</div>
+                  <h3 class="font-bold text-lg text-gray-800">${product.name}</h3>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+        `;
+      },
+      products: function() {
+        const products = [
+          { name: "APPLES", image: "🍎", description: "Fresh, crisp apples from premium orchards" },
+          { name: "ASPARAGUS", image: "🌱", description: "Tender, green asparagus spears" },
+          { name: "AVOCADOS", image: "🥑", description: "Creamy, nutrient-rich avocados" },
+          { name: "BANANAS", image: "🍌", description: "Sweet, ripe bananas" },
+          { name: "BERRIES", image: "🫐", description: "Mixed fresh berries" },
+          { name: "BROCCOLI", image: "🥦", description: "Fresh, green broccoli crowns" },
+          { name: "CHERIMOYAS", image: "🍈", description: "Exotic, sweet cherimoyas" },
+          { name: "CHERRIES", image: "🍒", description: "Sweet and tart cherries" },
+          { name: "CITRUS", image: "🍊", description: "Fresh citrus fruits" },
+          { name: "FIGS", image: "🟣", description: "Sweet, fresh figs" },
+          { name: "GINGER", image: "🫚", description: "Fresh, aromatic ginger root" },
+          { name: "GRANADILLAS", image: "🟡", description: "Sweet passion fruit" },
+          { name: "GRAPES", image: "🍇", description: "Fresh table grapes" },
+          { name: "KIWIS", image: "🥝", description: "Tangy, vitamin-rich kiwis" },
+          { name: "MANGOS", image: "🥭", description: "Sweet, tropical mangos" },
+          { name: "MELONS", image: "🍈", description: "Juicy, sweet melons" },
+          { name: "PEARS", image: "🍐", description: "Sweet, juicy pears" },
+          { name: "PERSIMMONS", image: "🟠", description: "Sweet persimmons" },
+          { name: "PINEAPPLES", image: "🍍", description: "Sweet, tropical pineapples" },
+          { name: "PITAHAYAS", image: "🐉", description: "Exotic dragon fruit" },
+          { name: "POMEGRANATES", image: "🟥", description: "Antioxidant-rich pomegranates" },
+          { name: "STONE FRUIT", image: "🍑", description: "Peaches, plums, and apricots" },
+          { name: "SUGAR SNAPS & SNOW PEAS", image: "🟢", description: "Crisp, sweet pea pods" },
+        ];
+        return `
+        <div class="bg-gray-50 min-h-screen">
+          <main class="container mx-auto px-4 py-16">
+            <div class="text-center mb-16">
+              <h1 class="text-6xl font-bold leading-tight">
+                <span class="text-green-500">PRODUCTS</span><br />
+                <span class="text-gray-700">LOCALLY DELIVERED.</span>
+              </h1>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
+              ${products.map(product => `
+                <div class="flex flex-col items-center text-center p-4 rounded-lg hover:shadow-lg transition-all duration-300 cursor-pointer group bg-white">
+                  <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 group-hover:bg-green-50">
+                    <span class="text-4xl">${product.image}</span>
+                  </div>
+                  <h3 class="text-sm font-bold text-gray-700 tracking-wide leading-tight">${product.name}</h3>
+                  <p class="text-xs text-gray-500 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">${product.description}</p>
+                </div>
+              `).join('')}
+            </div>
+            <div class="text-center mt-16">
+              <button onclick="navigateTo('contact')" class="bg-green-500 hover:bg-green-600 text-white px-12 py-4 rounded-full font-bold text-lg transition-colors duration-300 shadow-lg hover:shadow-xl">REQUEST QUOTE</button>
+            </div>
+          </main>
+        </div>
+        `;
+      },
+      about: function() {
+        const products = [
+          { name: "STRAWBERRIES", image: "🍓" },
+          { name: "BROCCOLI", image: "🥦" },
+          { name: "CHERIMOYAS", image: "🍈" },
+          { name: "CHERRIES", image: "🍒" },
+          { name: "AVOCADOS", image: "🥑" },
+          { name: "GRAPES", image: "🍇" },
+          { name: "APPLES", image: "🍎" },
+          { name: "BERRIES", image: "🫐" },
+        ];
+        return `
+        <div class="bg-white min-h-screen">
+          <div class="bg-gray-50 py-6 border-b">
+            <div class="overflow-x-auto">
+              <div class="flex space-x-6 px-4" style="width: max-content;">
+                ${products.map(product => `
+                  <div class="flex flex-col items-center min-w-fit">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-2">
+                      <span class="text-2xl">${product.image}</span>
+                    </div>
+                    <span class="text-xs text-gray-600 text-center font-medium">${product.name}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <main class="container mx-auto px-4 py-12">
+            <h1 class="text-6xl font-bold text-green-500 mb-12 leading-tight">ABOUT<br />US.</h1>
+            <div class="space-y-8 text-gray-700 leading-relaxed">
+              <p class="text-lg">Terra Exports is committed to distributing the freshest fruits and vegetables while providing strategic market intelligence to our valuable partners. We have a fast-paced, entrepreneurial, young and innovative company culture that is reinventing international fruit trade.</p>
+              <p class="text-lg">The key to our success in this business is the close and personal multi-cultural approach we maintain with our customers and our constant search for new frontiers. Our company has a global presence, shipping our products from and to 65+ countries around the world. We are consistently expanding by pioneering new fruits and vegetables into different markets globally.</p>
+              <p class="text-lg">Terra Exports has been featured 4 times in INC 5000's annual list of Fastest Growing Companies in the US, thanks to our global partners that continuously put their trust in our diverse team.</p>
+            </div>
+            <div class="text-center mt-12">
+              <button onclick="navigateTo('contact')" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold transition-colors">GET IN TOUCH</button>
+            </div>
+          </main>
+        </div>
+        `;
+      },
+      contact: function() {
+        const products = [
+          { name: "BERRIES", image: "🫐" },
+          { name: "BROCCOLI", image: "🥦" },
+          { name: "CHERIMOYAS", image: "🍈" },
+          { name: "CHERRIES", image: "🍒" },
+          { name: "LEMON", image: "🍋" },
+          { name: "MANDARINS", image: "🍊" },
+          { name: "ORANGES", image: "🍊" },
+          { name: "GRAPEFRUIT", image: "🟡" },
+          { name: "FIGS", image: "🟣" },
+          { name: "GINGER", image: "🫚" },
+          { name: "GRANADILLAS", image: "🟡" },
+          { name: "GRAPES", image: "🍇" },
+        ];
+        return `
+        <div class="bg-white min-h-screen">
+          <div class="bg-gray-50 py-6 border-b">
+            <div class="overflow-x-auto">
+              <div class="flex space-x-8 px-4" style="width: max-content;">
+                ${products.map(product => `
+                  <div class="flex flex-col items-center min-w-fit">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 hover:scale-110 transition-transform cursor-pointer">
+                      <span class="text-2xl">${product.image}</span>
+                    </div>
+                    <span class="text-xs text-gray-600 text-center font-medium">${product.name}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <main class="container mx-auto px-4 py-16">
+            <div class="grid lg:grid-cols-2 gap-16">
+              <div>
+                <h1 class="text-6xl font-bold text-green-500 mb-8">CONTACT US</h1>
+                <p class="text-gray-600 text-lg mb-12 leading-relaxed">Send us an email or give us a call, we'd love to hear from you.</p>
+                <div class="mb-12">
+                  <h2 class="text-2xl font-bold text-gray-700 mb-6">CORPORATE HEADQUARTERS</h2>
+                  <div class="text-gray-600 text-lg leading-relaxed">
+                    <p>9850 S. Maryland Pkwy.</p>
+                    <p>Ste A5-159</p>
+                    <p>Las Vegas, NV 89183 USA</p>
+                  </div>
+                </div>
+                <div>
+                  <h2 class="text-2xl font-bold text-gray-700 mb-6">INQUIRIES</h2>
+                  <div class="text-gray-600 text-lg leading-relaxed">
+                    <p><span class="font-semibold">F:</span> +1 702 852 0933</p>
+                    <p><span class="font-semibold">E:</span> <span class="text-green-500">sales[at]terraexports.com</span></p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <form id="contact-form" class="space-y-6">
+                  <div>
+                    <input type="text" name="name" placeholder="Name" class="w-full px-6 py-4 bg-gray-100 border-0 rounded-none text-gray-700 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all" required />
+                  </div>
+                  <div>
+                    <input type="tel" name="phone" placeholder="Phone" class="w-full px-6 py-4 bg-gray-100 border-0 rounded-none text-gray-700 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all" required />
+                  </div>
+                  <div>
+                    <input type="email" name="email" placeholder="Email" class="w-full px-6 py-4 bg-gray-100 border-0 rounded-none text-gray-700 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all" required />
+                  </div>
+                  <div>
+                    <textarea name="message" placeholder="Message" rows="6" class="w-full px-6 py-4 bg-gray-100 border-0 rounded-none text-gray-700 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all resize-none" required></textarea>
+                  </div>
+                  <div class="flex justify-end">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-12 py-4 font-bold text-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">SEND</button>
+                  </div>
+                </form>
+                <div class="mt-8 flex justify-end">
+                  <div class="bg-gray-100 p-4 border border-gray-300 text-center text-sm text-gray-500">
+                    <div class="flex items-center space-x-2">
+                      <input type="checkbox" class="w-4 h-4" />
+                      <span>I'm not a robot</span>
+                    </div>
+                    <div class="text-xs mt-1">reCAPTCHA</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+        `;
+      },
+    };
+
+    // Contact form logic
+    function setupContactForm() {
+      const form = document.getElementById('contact-form');
+      if (!form) return;
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        if (isSubmitting) return;
+        isSubmitting = true;
+        const data = new FormData(form);
+        formData = Object.fromEntries(data.entries());
+        form.querySelector('button[type="submit"]').textContent = 'SENDING...';
+        setTimeout(() => {
+          alert("Thank you for your message! We'll get back to you soon.");
+          form.reset();
+          form.querySelector('button[type="submit"]').textContent = 'SEND';
+          isSubmitting = false;
+        }, 1000);
+      };
+    }
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html> 
